@@ -4,7 +4,7 @@ import RecommendedBookCard from "../RecommendedBookCard";
 const RecommendedBooks = () => {
     const firstBook = books[2];
     const othersBook = books.slice(0, 6);
-    // main render
+    // Note: main render
     return (
         <section className="container grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-20">
             {/* first book */}
@@ -17,7 +17,6 @@ const RecommendedBooks = () => {
                 <RecommendedBookCard key={book.id} book={book} isFirstBook={false} />
             ))}
         </section>
-    )
-}
-
-export default RecommendedBooks
+    );
+};
+export default RecommendedBooks;
