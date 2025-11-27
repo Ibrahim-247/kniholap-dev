@@ -1,9 +1,13 @@
+"use client"
 import Image from "next/image";
 import { BiSearchAlt } from "react-icons/bi";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import dummyUserImage from "@/public/dummyUserImage.jpg"
+import { useUser } from "@/hooks/get-user.hook";
 
 const DashboardHeader = () => {
+    const {userData} = useUser();
+
     return (
         <header className="w-full flex flex-col xs:flex-row items-center justify-between bg-[#A5340C] py-4 px-6 text-white md:gap-8 gap-3">
             {/* Search input with icon */}
@@ -30,9 +34,11 @@ const DashboardHeader = () => {
                 {/* user avatar */}
                 <div className="md:size-10 size-9 rounded-full cursor-pointer">
                     <Image
-                        src={dummyUserImage}
+                        src={userData?.avatar || dummyUserImage}
                         alt="user avatar"
                         className="w-full h-full object-cover rounded-full"
+                        width={40}
+                        height={40}
                     />
                 </div>
             </div>
