@@ -10,8 +10,7 @@ const DashboardBooksList = () => {
     // Note: get all books list data from api
     const {
         data: getAllBooksListData,
-        isLoading: isGetAllBooksListDataLoading,
-        error
+        isLoading: isGetAllBooksListDataLoading
     } = useQuery({
         queryKey: ["gettAllBooksListData"],
         queryFn: async () => {

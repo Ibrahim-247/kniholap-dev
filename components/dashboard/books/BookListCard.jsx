@@ -5,10 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import BookRemoveModal from "./BookRemoveModal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { axiosPrivateClient } from "@/lib/axios.private.client";
 
 const BookListCard = ({ book }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const axiosInstance = axiosPrivateClient();
+    const queryClient = useQueryClient();
 
+    // Note: extract book properties
     const {
         id,
         title,
@@ -37,6 +43,27 @@ const BookListCard = ({ book }) => {
         rating_count,
         book_categories
     } = book;
+
+    // Note: book deleted mutation success handler
+    const handleBookDeleteMutation = useMutation({
+        mutationFn: async () => {
+            const response = await axiosInstance.delete(`/auth/seller/book/delete/${id}`);
+            return response?.data;
+        },
+        onSuccess: (data) => {
+            toast.success(data?.message || "Book removed successfully")
+            queryClient.invalidateQueries({ queryKey: ["gettAllBooksListData"], exact: true });
+            closeRemoveModal();
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message || "Failed to remove the book. Please try again.");
+        }
+    });
+
+    // Note: handle book remove 
+    const handleBookRemove = () => {
+        handleBookDeleteMutation.mutate();
+    }
 
     // Parse category IDs from string to array
     const parsedCategoryIds = category_ids ? JSON.parse(category_ids) : [];
@@ -195,6 +222,8 @@ const BookListCard = ({ book }) => {
                 isModalOpen={isOpen}
                 handleCancel={closeRemoveModal}
                 bookTitle={title}
+                handleBookRemove={handleBookRemove}
+                handleBookDeleteMutation={handleBookDeleteMutation}
             />
         </div>
     );

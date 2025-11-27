@@ -2,7 +2,7 @@ import { Modal } from "antd";
 import { PiSealCheckLight } from "react-icons/pi";
 import { TbCancel } from "react-icons/tb";
 
-const BookRemoveModal = ({ isModalOpen, handleCancel }) => {
+const BookRemoveModal = ({ isModalOpen, handleCancel, handleBookRemove, handleBookDeleteMutation }) => {
     return (
         <Modal
             centered
@@ -24,10 +24,11 @@ const BookRemoveModal = ({ isModalOpen, handleCancel }) => {
                 <div className="w-full flex items-center gap-4 mt-5">
                     {/* remove */}
                     <button
-                        onClick={handleCancel}
+                        onClick={handleBookRemove}
+                        disabled={handleBookDeleteMutation?.isPending}
                         className="cursor-pointer w-full border border-[#F84E12] rounded-full py-2 bg-[#F84E12] text-white hover:bg-transparent hover:text-black transition-all duration-300"
                     >
-                        Remove
+                        {handleBookDeleteMutation?.isPending ? "Removing..." : "Remove Book"}
                     </button>
 
                     {/* cancel */}
