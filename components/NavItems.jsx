@@ -1,6 +1,4 @@
 "use client";
-
-import { navItems } from "@/constants";
 import { useRouter } from "next/navigation";
 import NavLink from "./common/NavLink";
 import { useUser } from "@/hooks/get-user.hook";
@@ -17,12 +15,12 @@ const NavItems = () => {
     const navItems = [];
 
     if (accessToken) {
-        navItems.push({ name: "Dashboard", link: "/dashboard", end: false });
+        navItems.push({ name: "Dashboard", link: "/dashboard", end: false, });
+        navItems.push({ name: "Bookmark", link: "/bookmark", end: false })
     }
 
     navItems.push(
-        { name: "Library", link: "/library", end: true },
-        { name: "Bookmark", link: "/bookmark", end: false }
+        { name: "Library", link: "/library", end: true }
     );
     // main render
     return (

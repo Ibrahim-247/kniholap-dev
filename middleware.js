@@ -18,7 +18,7 @@ export function middleware(request) {
   ];
 
   // Protected routes (require login)
-  const protectedRoutes = ["/choose_interests", "/dashboard"];
+  const protectedRoutes = ["/choose_interests", "/dashboard", "/bookmark"];
 
   const isPublicPath = publicRoutes.some((route) => pathname.startsWith(route));
   const isProtectedPath = protectedRoutes.some((route) =>
