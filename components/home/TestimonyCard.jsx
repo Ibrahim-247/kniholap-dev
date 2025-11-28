@@ -25,16 +25,15 @@ const TestimonyCard = ({ testimony = {} }) => {
             <div className="sm:mt-2 mt-1 flex items-center justify-center gap-2">
                 <StarRating rating={rating} />
                 <span className="text-lg font-medium text-yellow-600">
-                    {rating.toFixed(1)}
+                    {rating?.toFixed(1)}
                 </span>
             </div>
 
             {/* Review Text */}
             <p className="sm:mt-4 mt-2 text-gray-600 text-sm leading-relaxed italic">
-                “{review.length > 120 ? review.slice(0, 120) + "..." : review}”
+                “{review?.length > 120 ? review?.slice(0, 120) + "..." : review}”
             </p>
         </div>
     );
 };
-
 export default TestimonyCard;

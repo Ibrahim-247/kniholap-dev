@@ -1,53 +1,68 @@
+"use client";
 import Marquee from "react-fast-marquee"
 import SectionTitle from "../common/SectionTitle"
 import TestimonyCard from "./TestimonyCard"
+import { useQuery } from "@tanstack/react-query";
+import { axiosPrivateClient } from "@/lib/axios.private.client";
+
+// const testimonials = [
+//     {
+//         id: 1,
+//         name: "John Doe",
+//         rating: 4.5,
+//         avatar: "https://i.pravatar.cc/300",
+//         review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
+//     },
+//     {
+//         id: 2,
+//         name: "John Doe",
+//         rating: 4.5,
+//         avatar: "https://i.pravatar.cc/300",
+//         review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
+//     },
+//     {
+//         id: 3,
+//         name: "John Doe",
+//         rating: 4.5,
+//         avatar: "https://i.pravatar.cc/300",
+//         review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
+//     },
+//     {
+//         id: 4,
+//         name: "John Doe",
+//         rating: 4.5,
+//         avatar: "https://i.pravatar.cc/300",
+//         review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
+//     },
+//     {
+//         id: 5,
+//         name: "John Doe",
+//         rating: 4.5,
+//         avatar: "https://i.pravatar.cc/300",
+//         review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
+//     },
+//     {
+//         id: 6,
+//         name: "John Doe",
+//         rating: 4.5,
+//         avatar: "https://i.pravatar.cc/300",
+//         review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
+//     },
+// ];
 
 const Testimonials = () => {
-    const testimonials = [
-        {
-            id: 1,
-            name: "John Doe",
-            rating: 4.5,
-            avatar: "https://i.pravatar.cc/300",
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
-        },
-        {
-            id: 2,
-            name: "John Doe",
-            rating: 4.5,
-            avatar: "https://i.pravatar.cc/300",
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
-        },
-        {
-            id: 3,
-            name: "John Doe",
-            rating: 4.5,
-            avatar: "https://i.pravatar.cc/300",
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
-        },
-        {
-            id: 4,
-            name: "John Doe",
-            rating: 4.5,
-            avatar: "https://i.pravatar.cc/300",
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
-        },
-        {
-            id: 5,
-            name: "John Doe",
-            rating: 4.5,
-            avatar: "https://i.pravatar.cc/300",
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
-        },
-        {
-            id: 6,
-            name: "John Doe",
-            rating: 4.5,
-            avatar: "https://i.pravatar.cc/300",
-            review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, autem?",
-        },
-    ]
-    // main render
+    const axiosInstance = axiosPrivateClient();
+
+    // Note: Get all testimonials
+    const { data: testimonialsData } = useQuery({
+        queryKey: ["testimonials"],
+        queryFn: async () => {
+            const response = await axiosInstance.get(`/book/review/list`);
+            return response?.data?.data || [];
+        }
+    });
+
+    // Note: main render
     return (
         <section className="w-full flex flex-col items-center justify-start">
             <div className='w-full flex flex-col items-center justify-start gap-2 sm:gap-4'>
@@ -63,7 +78,7 @@ const Testimonials = () => {
                     direction="left"
                     className="min-h-[300px]"
                 >
-                    {testimonials.map((testimony, index) => (
+                    {testimonialsData?.map((testimony, index) => (
                         <TestimonyCard key={index} testimony={testimony} />
                     ))}
                 </Marquee>

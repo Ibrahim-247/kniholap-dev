@@ -1,6 +1,7 @@
 import { books } from "@/data";
 import SectionTitle from "../common/SectionTitle";
 import RecommendedBookCard from "../RecommendedBookCard";
+import { useQuery } from "@tanstack/react-query";
 const RecommendedBooks = () => {
     const firstBook = books[2];
     const othersBook = books.slice(0, 6);
