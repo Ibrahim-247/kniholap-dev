@@ -28,7 +28,7 @@ const CheckoutButton = ({ book }) => {
             url ? window.location.href = url : console.error("checkout_url missing in API response:", data);
         },
         onError: (error) => {
-            console.error("Checkout error:", error);
+            // console.error("Checkout error:", error);
         },
     });
     const handleCheckout = () => {

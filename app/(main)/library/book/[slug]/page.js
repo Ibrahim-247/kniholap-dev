@@ -1,3 +1,4 @@
+
 import StarRating from "@/components/common/StarRating";
 import BookImages from "@/components/library/books/BookImages";
 import RelatedBooks from "@/components/library/books/RelatedBooks";
@@ -86,7 +87,7 @@ const BookDetails = async ({ params }) => {
           </div>
         </div>
       </div>
-      <RelatedBooks />
+      <RelatedBooks book={book} />
     </div>
   );
 };

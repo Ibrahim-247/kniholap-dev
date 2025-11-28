@@ -68,7 +68,7 @@ const BookCard = ({ book = {}, layout }) => {
             </div>
         )
     }
-    // default layout
+    // Note: default layout
     return (
         <div className="w-full p-4 md:p-6 rounded-3xl border flex flex-col justify-start gap-4 border-black/20">
             <div className="w-full h-52 xs:h-56 sm:h-60 rounded-lg overflow-hidden">
