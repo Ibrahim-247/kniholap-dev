@@ -49,9 +49,10 @@ const CheckoutButton = ({ book }) => {
             ) : (
                 <CommonBtn
                     onclick={handleCheckout}
+                    disabled={handleCheckoutMutation.isPending}
                     className="rounded-full hover:opacity-90 hover:bg-secondary transition-colors duration-300 xl:mt-5 hover:text-white"
                 >
-                    {handleCheckoutMutation.isLoading ? "Loading..." : "Buy Now"}
+                    {handleCheckoutMutation.isPending ? "Loading..." : "Buy Now"}
                 </CommonBtn>
             )}
         </>
