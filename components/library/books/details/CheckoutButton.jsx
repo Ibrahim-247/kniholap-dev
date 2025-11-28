@@ -24,7 +24,6 @@ const CheckoutButton = ({ book }) => {
             // } else {
             //     console.error("checkout_url missing in API response:", data);
             // }
-
             // Note: using ternary operator
             url ? window.location.href = url : console.error("checkout_url missing in API response:", data);
         },

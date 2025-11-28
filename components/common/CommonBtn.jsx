@@ -21,7 +21,7 @@ const CommonBtn = ({
       {link ? (
         <Link
           href={path}
-          aria-hidden="true" // prevent scroll/focus warning
+          aria-hidden="true"
           className={cn(commonStyle, className)}
         >
           {children}

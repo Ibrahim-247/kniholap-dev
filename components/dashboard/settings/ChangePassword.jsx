@@ -1,18 +1,43 @@
+"use client";
 import CommonInputWrapper from "@/components/common/CommonInputWrapper";
+import ScreenLoading from "@/components/common/ScreenLoading";
+import { axiosPrivateClient } from "@/lib/axios.private.client";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const ChangePassword = () => {
+    const axiosInstance = axiosPrivateClient();
+
+    // Note: react hook form
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset
     } = useForm();
+
+    // Note: handle change password submit
+    const handleChangePasswordMutation = useMutation({
+        mutationKey: ["passwordChange"],
+        mutationFn: async (data) => {
+            const response = await axiosInstance.post(`/user/password/reset`, data);
+            return response?.data;
+        },
+        onSuccess: () => {
+            toast.success("Password changed successfully!");
+            reset();
+        },
+        onError: (error) => {
+            toast.error(error?.response?.data?.message || "Failed to change password. Please try again.");
+        }
+    });
 
     // Note: form submit
     const handleSubmitForm = (data) => {
         console.log("Data", data);
+        handleChangePasswordMutation.mutate(data);
     };
-
 
     // Note: main form render
     return (
@@ -23,14 +48,14 @@ const ChangePassword = () => {
                 className="w-full flex flex-col gap-6"
             >
 
-                {/* old password */}
+                {/* current password */}
                 <CommonInputWrapper
                     register={register}
                     errors={errors}
                     type="password"
-                    name="old_password"
+                    name="current_password"
                     placeholder="Enter old password"
-                    register_as="old_password"
+                    register_as="current_password"
                     label="Old Password:"
                     validationRules={{
                         required: "This field is required",
@@ -56,9 +81,9 @@ const ChangePassword = () => {
                     register={register}
                     errors={errors}
                     type="password"
-                    name="confirm_password"
+                    name="confirm_new_password"
                     placeholder="Enter confirm password"
-                    register_as="confirm_password"
+                    register_as="confirm_new_password"
                     label="Confirm Password:"
                     validationRules={{
                         required: "This field is required",
@@ -68,9 +93,10 @@ const ChangePassword = () => {
                 {/* save button */}
                 <button
                     type="submit"
+                    disabled={handleChangePasswordMutation.isPending}
                     className="col-span-2 w-full cursor-pointer bg-[#F84E12] text-white px-5 py-2 rounded-lg mt-3"
                 >
-                    Save Changes
+                    {handleChangePasswordMutation.isPending ? "Changing..." : "Change Password"}
                 </button>
 
             </form>

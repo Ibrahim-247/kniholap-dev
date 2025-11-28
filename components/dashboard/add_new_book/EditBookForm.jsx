@@ -39,8 +39,8 @@ const EditBookForm = ({ paramsId }) => {
             return response?.data?.data
         }
     });
-    // all book images come from book id
-    const { book_images, category_ids, book_categories } = editBookData || {};
+    // Note: all book images come from book id
+    const { book_images, book_categories } = editBookData || {};
     const subImageID = book_images?.map(img => img.id) || [];
 
     // Note: set all default value
