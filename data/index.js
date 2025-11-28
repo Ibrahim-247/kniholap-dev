@@ -17,7 +17,6 @@ import book_16 from "../public/product_16.png";
 import book_17 from "../public/product_17.png";
 const bookPdf = "/books/book.pdf";
 
-
 export const bookImages = [
     book_1,
     book_2,

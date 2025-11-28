@@ -6,24 +6,24 @@ import Image from "next/image";
 import { useState } from "react";
 const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
     const {
-        id,
         title,
         author,
-        cover,
-        price,
+        cover_image,
         rating,
         is_bookmark,
-        no_of_reviews,
         description,
-        images,
         category = {},
         subcategories = [],
     } = book || {}
     const [isBookmarked, setIsBookmarked] = useState(is_bookmark);
+
+    // Note: convert cover image to null if this empty image
+    const src = cover_image ? cover_image : null
+
     const handleBookmark = () => {
         setIsBookmarked(!isBookmarked);
     };
-    // main render
+    // Note: main render
     return (
         <>
             {
@@ -31,11 +31,19 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                     <div className="bg-secondary-rgb p-4 rounded-xl h-full flex sm:flex-row flex-col md:gap-4 gap-3">
                         {/* book cover */}
                         <div className="sm:w-1/2 w-full relative flex rounded-xl overflow-hidden justify-center h-48  sm:h-full">
-                            <Image
-                                src={cover}
-                                alt={title}
-                                className="w-full h-full object-cover"
-                            />
+                            {src ? (
+                                <Image
+                                    src={src}
+                                    alt={title}
+                                    className="w-full h-full object-cover"
+                                    width={480}
+                                    height={480}
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                    <span>No Cover Image</span>
+                                </div>
+                            )}
                             <div className="max-w-[90%] w-full text-2xl flex items-center justify-between gap-1 z-10 absolute bottom-5">
                                 {category.name === "Premium" && (
                                     <FaCrown className="text-2xl text-yellow-500" />
@@ -78,11 +86,19 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                     <div className="w-full flex gap-4 flex-col justify-start bg-secondary-rgb p-4 rounded-xl">
                         {/* book cover */}
                         <div className="w-full shadow-md rounded-2xl overflow-hidden h-48 sm:h-60 shrink-0 relative flex justify-center -mt-16">
-                            <Image
-                                src={cover}
-                                alt={title}
-                                className="w-full h-full object-cover"
-                            />
+                            {src ? (
+                                <Image
+                                    src={src}
+                                    alt={title}
+                                    className="w-full h-full object-cover"
+                                    width={480}
+                                    height={480}
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                    <span>No Cover Image</span>
+                                </div>
+                            )}
                             <div className="max-w-[90%] w-full text-2xl flex items-center justify-between gap-1 z-10 absolute bottom-5">
                                 {category.name === "Premium" && (
                                     <FaCrown className="text-2xl text-yellow-500" />
