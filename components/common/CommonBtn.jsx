@@ -31,7 +31,7 @@ const CommonBtn = ({
           type={type}
           disabled={disabled}
           onClick={onclick}
-          aria-hidden="true" // prevent scroll/focus warning
+          aria-hidden="true"
           className={cn(commonStyle, className)}
         >
           {isLoading ? <Loader className="border-white" /> : children}

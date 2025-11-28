@@ -9,7 +9,7 @@ const Description = ({ book = {} }) => {
                     className="text-justify text-sm sm:text-base xl:text-xl text-gray-700 prose prose-sm sm:prose-base max-w-none
                  line-clamp-3 sm:line-clamp-4 hover:line-clamp-none transition-all duration-300"
                     dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(book.description),
+                        __html: DOMPurify.sanitize(book?.description),
                     }}
                 />
             ) : (
@@ -19,6 +19,5 @@ const Description = ({ book = {} }) => {
             )}
         </div>
     )
-}
-
-export default Description
+};
+export default Description;
