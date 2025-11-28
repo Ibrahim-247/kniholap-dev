@@ -116,6 +116,7 @@ const AddNewBookForm = () => {
         formData.append('condition', data.condition);
         formData.append('weight_gram', data.weight_gram);
         formData.append('description', data.description);
+        formData.append('shipping_cost', data.shipping_cost)
 
         // Append categories as array 
         if (data.category_ids && data.category_ids.length > 0) {
@@ -329,6 +330,21 @@ const AddNewBookForm = () => {
                                 required: "Weight is required"
                             }
                         }
+                    />
+                    {/* shipping cost */}
+                    <CommonInputWrapper 
+                        label="Shipping Cost"
+                        type="number"
+                        name="shipping_cost"
+                        register_as="shipping_cost"
+                        register={register}
+                        placeholder="Enter Shipping Cost"
+                        errors={errors}
+                        validationRules={
+                            {
+                                required: "Shipping Cost is required"
+                            }
+                        }                    
                     />
                 </div>
 
