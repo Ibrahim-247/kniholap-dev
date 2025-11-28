@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { GrCloudUpload } from "react-icons/gr";
 import { RxCross2 } from "react-icons/rx";
 import CommonInputWrapper from "@/components/common/CommonInputWrapper";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosPrivateClient } from "@/lib/axios.private.client";
 import { useOptions } from "@/hooks/options.hook";
 import toast from "react-hot-toast";
@@ -16,13 +16,12 @@ const EditBookForm = ({ paramsId }) => {
     const [subImages, setSubImages] = useState([]);
     const [subImagePreviews, setSubImagePreviews] = useState([]);
     const { categoryList } = useOptions();
-
+    const queryClient = useQueryClient();
     // Note: convert categories to select options
     const categoryOptions = categoryList?.map(category => ({
         value: category?.id,
         label: category?.title
     }));
-
     // Note: react hook form
     const {
         register,
@@ -32,7 +31,6 @@ const EditBookForm = ({ paramsId }) => {
         watch,
         reset
     } = useForm();
-
     // Note: get edit form data
     const { data: editBookData } = useQuery({
         queryKey: ["editBookData", paramsId],
@@ -41,11 +39,13 @@ const EditBookForm = ({ paramsId }) => {
             return response?.data?.data
         }
     });
-    console.log("Edit book data get:-->", editBookData);
+    // all book images come from book id
+    const { book_images, category_ids, book_categories } = editBookData || {};
+    const subImageID = book_images?.map(img => img.id) || [];
 
+    // Note: set all default value
     useEffect(() => {
         if (editBookData) {
-            // Reset form fields
             reset({
                 title: editBookData.title,
                 author: editBookData.author,
@@ -55,23 +55,20 @@ const EditBookForm = ({ paramsId }) => {
                 condition: editBookData.condition,
                 weight_gram: editBookData.weight_gram,
                 description: editBookData.description,
-                category_ids: editBookData.selectedCategories || [],
+                shipping_cost: editBookData.shipping_cost,
+                category_ids: book_categories?.map(c => c.category_id) || []
             });
-
-            // Set cover image preview if exists
             if (editBookData.cover_image) {
                 setCoverPreview(editBookData.cover_image);
             }
-
-            // Set sub-images previews if exist
-            if (editBookData.images && editBookData.images.length > 0) {
-                setSubImagePreviews(editBookData.images);
+            // Default show sub images
+            if (book_images && book_images.length > 0) {
+                setSubImagePreviews(book_images.map(img => img.image_url));
             }
         }
     }, [editBookData, reset]);
-
     // Watch selected categories (for multiple select)
-    const selectedCategories = watch("category_ids");
+    // const selectedCategories = watch("category_ids");
 
     // Note: Handle Cover Image Change
     const handleCoverChange = (e) => {
@@ -83,14 +80,12 @@ const EditBookForm = ({ paramsId }) => {
             reader.readAsDataURL(file);
         }
     };
-
     // Note: Remove Cover Image
     const removeCover = () => {
         setCoverFile(null);
         setCoverPreview(null);
         document.getElementById('cover_image').value = '';
     };
-
     // Note: Handle Sub Images Change (Multiple)
     const handleSubImagesChange = (e) => {
         const files = Array.from(e.target.files);
@@ -103,40 +98,42 @@ const EditBookForm = ({ paramsId }) => {
                 reader.readAsDataURL(file);
             });
         });
-
         Promise.all(newPreviews).then(previews => {
             setSubImages(prev => [...prev, ...files]);
             setSubImagePreviews(prev => [...prev, ...previews]);
         });
     };
+    // Note: Delete sub images book mutation
+    const deleteSubImagesMutation = useMutation({
+        mutationKey: ["deleteSubImages"],
+        mutationFn: async () => {
+            const response = await axiosInstance.delete(`/auth/seller/book/image/delete/${subImageID}`);
+            return response?.data;
+        },
+        onSuccess: (data) => {
+            toast.success(data?.message || "Sub images deleted successfully!");
+            queryClient.invalidateQueries({ queryKey: ["editBookData", paramsId], exact: true });
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.message || "Failed to delete sub images. Please try again.");
+        }
+    });
 
-    // Note: Remove Single Sub Image
-    const removeSubImage = (index) => {
-        setSubImages(prev => prev.filter((_, i) => i !== index));
-        setSubImagePreviews(prev => prev.filter((_, i) => i !== index));
-    };
-
-    // Note: Remove existing sub image (when it's from API, not a new file)
-    const removeExistingSubImage = (index) => {
-        setSubImagePreviews(prev => prev.filter((_, i) => i !== index));
-        // You might want to track which existing images to delete
-        // This would require additional state management
-    };
+    // Note: Sub images delete handler
+    const handleDelete = () => deleteSubImagesMutation.mutate();
 
     // Note: Mutation to Update Book
     const mutation = useMutation({
         mutationFn: async (formData) => {
-            const response = await axiosInstance.post(`/auth/seller/book/update/${paramsId}`, formData, {
+            const response = await axiosInstance.post(`/auth/seller/book/update`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            return response.data;
+            return response?.data;
         },
         onSuccess: (data) => {
-            console.log("Book updated:", data);
-            toast.success("Book updated successfully!");
+            toast.success(data?.message || "Book updated successfully!");
         },
         onError: (error) => {
-            console.log("Error updating book:", error.response?.data || error);
             toast.error(error.response?.data?.message || "Failed to update book. Please try again.");
         }
     });
@@ -145,7 +142,8 @@ const EditBookForm = ({ paramsId }) => {
     const onSubmit = (data) => {
         const formData = new FormData();
 
-        // Append text fields
+        // Note: Append text fields
+        formData.append('book_id', paramsId);
         formData.append('title', data.title);
         formData.append('author', data.author);
         formData.append('price', data.price);
@@ -154,23 +152,18 @@ const EditBookForm = ({ paramsId }) => {
         formData.append('condition', data.condition);
         formData.append('weight_gram', data.weight_gram);
         formData.append('description', data.description);
-        formData.append('_method', 'PUT'); // For Laravel if using POST for update
-
         // Append categories as array 
         if (data.category_ids && data.category_ids.length > 0) {
             data.category_ids.forEach(id => formData.append('category_ids[]', id));
         }
-
         // Append cover image only if changed
         if (coverFile) {
             formData.append('cover_image', coverFile);
         }
-
         // Append new sub images only
         subImages.forEach((image, index) => {
             formData.append(`images[${index}]`, image);
         });
-
         mutation.mutate(formData);
     };
 
@@ -196,10 +189,10 @@ const EditBookForm = ({ paramsId }) => {
                         />
                         {coverPreview ? (
                             <div className="relative h-full flex items-center justify-center">
-                                <img 
-                                    src={coverPreview} 
-                                    alt="Cover preview" 
-                                    className="max-h-full max-w-full object-contain rounded-lg" 
+                                <img
+                                    src={coverPreview}
+                                    alt="Cover preview"
+                                    className="max-h-full max-w-full object-contain rounded-lg"
                                 />
                                 <button
                                     type="button"
@@ -243,22 +236,23 @@ const EditBookForm = ({ paramsId }) => {
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
                                 {subImagePreviews?.map((preview, index) => (
                                     <div key={index} className="relative group">
-                                        <img 
-                                            src={preview} 
-                                            alt={`Preview ${index + 1}`} 
-                                            className="w-full h-32 object-cover rounded-lg shadow" 
+                                        <img
+                                            src={preview}
+                                            alt={`Preview ${index + 1}`}
+                                            className="w-full h-32 object-cover rounded-lg shadow"
                                         />
                                         <button
                                             type="button"
-                                            onClick={(e) => { 
-                                                e.stopPropagation(); 
-                                                // Check if it's an existing image (URL) or new file (data URL)
-                                                if (preview.startsWith('blob:')) {
-                                                    removeSubImage(index);
-                                                } else {
-                                                    removeExistingSubImage(index);
-                                                }
-                                            }}
+                                            // onClick={(e) => {
+                                            //     // e.stopPropagation();
+                                            //     // // Check if it's an existing image (URL) or new file (data URL)
+                                            //     // if (preview.startsWith('blob:')) {
+                                            //     //     removeSubImage(index);
+                                            //     // } else {
+                                            //     //     removeExistingSubImage(index);
+                                            //     // }
+                                            // }}
+                                            onClick={handleDelete}
                                             className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"
                                         >
                                             <RxCross2 size={14} />
@@ -390,8 +384,24 @@ const EditBookForm = ({ paramsId }) => {
                             required: "Weight is required"
                         }}
                     />
+                    {/* shipping cost */}
+                    <CommonInputWrapper
+                        label="Shipping Cost"
+                        type="number"
+                        name="shipping_cost"
+                        register_as="shipping_cost"
+                        register={register}
+                        placeholder="Enter Shipping Cost"
+                        errors={errors}
+                        validationRules={
+                            {
+                                required: "Shipping Cost is required"
+                            }
+                        }
+                    />
                 </div>
 
+                {/* description */}
                 <CommonInputWrapper
                     label="Description"
                     type="textarea"
@@ -403,6 +413,7 @@ const EditBookForm = ({ paramsId }) => {
                     validationRules={{ required: "Description is required" }}
                 />
 
+                {/* update book button */}
                 <button
                     type="submit"
                     disabled={mutation.isPending}
