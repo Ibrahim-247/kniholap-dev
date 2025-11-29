@@ -14,7 +14,6 @@ const LibraryClient = () => {
         type: null,
         category_ids: null
     });
-    console.log(filters);
     // main layout
     return (
         <>

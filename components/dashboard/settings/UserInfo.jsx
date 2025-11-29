@@ -2,9 +2,7 @@ import { useUser } from '@/hooks/get-user.hook';
 import { FaCrown } from 'react-icons/fa';
 
 const UserInfo = () => {
-    const { userData } = useUser()
-    console.log("userData from user info:", userData);
-
+    const { userData } = useUser();
     // Note: main ui component
     return (
         <div className="w-full">

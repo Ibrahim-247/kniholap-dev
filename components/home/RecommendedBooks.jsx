@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosPrivateClient } from "@/lib/axios.private.client";
 const RecommendedBooks = () => {
     const firstBook = books[2];
-    const othersBook = books.slice(0, 6);
+    // const othersBook = books.slice(0, 6);
     const axiosInstance = axiosPrivateClient();
 
     // Note: Get all recommended books
@@ -17,7 +17,6 @@ const RecommendedBooks = () => {
             return response?.data?.data
         }
     });
-    console.log("Get all recommended books:--->", getAllRecommendedBooks);
 
     // Note: main render
     return (

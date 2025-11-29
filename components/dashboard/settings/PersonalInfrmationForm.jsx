@@ -27,7 +27,6 @@ const PersonalInfrmationForm = () => {
             userRefetch();
         },
         onError: (err) => {
-            console.log("Error updating personal info:", err);
             toast.error(err?.response?.data?.message || "Error updating personal info");
         }
     });
@@ -35,7 +34,6 @@ const PersonalInfrmationForm = () => {
     // Note: form submit
     const handleSubmitForm = (data) => {
         hanldePersonalInfoChange.mutate(data);
-        console.log(data)
     };
 
     // Note: ui form

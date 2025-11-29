@@ -8,10 +8,6 @@ import { Autoplay } from 'swiper/modules';
 import { books } from "@/data"
 import BookCard from "../BookCard";
 const TopSelling = ({ topSellingBooks }) => {
-    console.log("Top Selling Books in TopSelling component:", topSellingBooks);
-
-
-
     // main render
     return (
         <section id="top-selling" className="container flex flex-col gap-6 lg:gap-12 justify-start items-center">

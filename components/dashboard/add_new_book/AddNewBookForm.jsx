@@ -94,11 +94,9 @@ const AddNewBookForm = () => {
             return response.data;
         },
         onSuccess: (data) => {
-            console.log("Book published:", data);
             showModal();
         },
         onError: (error) => {
-            console.log("Error publishing book:", error.response?.data || error);
             toast.error(error.response?.data?.message || "Failed to publish book. Please try again.");
         }
     });

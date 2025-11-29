@@ -40,7 +40,6 @@ const OldOrderList = () => {
     const handleDateChange = (date) => {
         setSelectedDate(date);
         setOpen(false);
-        console.log("Selected date:", date?.format("YYYY-MM-DD"));
     };
 
     return (

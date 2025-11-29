@@ -29,8 +29,6 @@ const Categories = ({ filters, setFilters }) => {
         });
     };
 
-    console.log(categoryList);
-
     // main render
     return (
         <div className="w-full flex items-center gap-4">

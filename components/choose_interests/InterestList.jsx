@@ -43,7 +43,6 @@ const InterestList = () => {
     },
     onSuccess: (data) => {
       toast.success("Interests updated successfully!");
-      console.log("Success:", data);
       Cookies.remove("firstTime", { path: "/" });
       router.push("/library");
     },

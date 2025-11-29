@@ -52,7 +52,7 @@ const SettingsContent = () => {
     };
 
     const onChange = checked => {
-        console.log(`switch to ${checked}`);
+        // console.log(`switch to ${checked}`);
     };
 
     // Note: main ui component

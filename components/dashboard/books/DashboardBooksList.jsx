@@ -18,7 +18,6 @@ const DashboardBooksList = () => {
             return response?.data?.data || [];
         }
     });
-    console.log("Get All books data:--->", getAllBooksListData);
 
     // Note: main ui component
     return (

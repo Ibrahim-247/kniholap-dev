@@ -35,7 +35,6 @@ const ChangePassword = () => {
 
     // Note: form submit
     const handleSubmitForm = (data) => {
-        console.log("Data", data);
         handleChangePasswordMutation.mutate(data);
     };
 

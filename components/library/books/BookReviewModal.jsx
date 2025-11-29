@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 
 const BookReviewModal = ({ open, setOpen, book = {} }) => {
-    console.log("Book:---->", book);
     const { handleBookReviewMutation } = useReviews();
     const { id } = book || {};
     const [rating, setRating] = useState(0);
