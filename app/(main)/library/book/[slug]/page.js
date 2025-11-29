@@ -1,4 +1,3 @@
-
 import StarRating from "@/components/common/StarRating";
 import BookImages from "@/components/library/books/BookImages";
 import RelatedBooks from "@/components/library/books/RelatedBooks";
@@ -6,6 +5,7 @@ import { axiosPrivateServer } from "@/lib/axios.private.server";
 import { notFound } from "next/navigation";
 import Description from "@/components/library/books/details/Description";
 import CheckoutButton from "@/components/library/books/details/CheckoutButton";
+import GiveReview from "@/components/library/books/GiveReview";
 export const metadata = {
   title: "Book Details",
   description:
@@ -26,7 +26,6 @@ const BookDetails = async ({ params }) => {
   }
 
   console.log("Book Details Data:---->", book);
-
 
   // Note: main render
   return (
@@ -51,15 +50,21 @@ const BookDetails = async ({ params }) => {
             </p>
             {/* rating */}
             <div className="flex items-center">
-              <StarRating rating={book?.rating_avg} />
+              <StarRating rating={book?.total_rating_avg} />
               <span className="ml-2 flex items-center text-xs sm:text-base text-gray-500">
-                {book?.rating_avg || 0} ({book?.rating_count || 0} reviews)
+                {book?.rating_avg || 0} ({book?.no_of_reviews || 0} reviews)
               </span>
             </div>
+            <GiveReview book={book} className="w-fit bg-red-300 py-1.5! px-7! text-[#333] font-medium" />
 
-            {/* price  */}
+            {/* price */}
             <p className="text-base">
               Price: $<label className="font-semibold">{book?.price}</label>
+            </p>
+            {/* shipping cost */}
+            <p className="text-base">
+              Shipping Cost:{" "}
+              <label className="font-semibold">{book?.shipping_cost}</label>
             </p>
             {/* isbn */}
             <p className="text-base">
