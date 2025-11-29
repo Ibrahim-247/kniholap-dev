@@ -47,7 +47,7 @@ const RelatedBooks = ({ book }) => {
     }
 
     if (isError || !categoryString) {
-        return null; // or show fallback UI
+        return <p className="w-full text-center font-medium text-2xl">No related books found</p>
     }
 
     return (
