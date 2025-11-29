@@ -59,11 +59,12 @@ const Hero = ({ topRatedBooks = [] }) => {
                                 <SwiperSlide key={index}>
                                     <div className="group relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden">
                                         <Image
-                                            src={book.cover_image}
+                                            src={book.cover_image || "/placeholder.jpg"}
                                             alt={`${book.title || "Unknown"} cover image`}
                                             width={300}
                                             height={400}
                                             className="w-full h-full object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                                            priority
                                         />
                                         <div className="z-20 right-3 top-3 absolute">
                                             <StarRating className="text-primary" rating={Number(book.rating || 0)} />
