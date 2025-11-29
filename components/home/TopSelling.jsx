@@ -1,14 +1,12 @@
 "use client";
-
 import SectionTitle from "../common/SectionTitle";
 // Swiper styles
 import "swiper/css";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import { books } from "@/data"
 import BookCard from "../BookCard";
 const TopSelling = ({ topSellingBooks }) => {
-    // main render
+    // Note: main render
     return (
         <section id="top-selling" className="container flex flex-col gap-6 lg:gap-12 justify-start items-center">
             <SectionTitle text="Top Selling Books" />

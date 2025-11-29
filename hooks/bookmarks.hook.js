@@ -6,7 +6,7 @@ const useBookMarks = () => {
   const axiosInstance = axiosPrivateClient();
 
   // Note: handle book marks mutation
-  const handleBookMarks = useMutation({
+  const handleBookMarksMutation = useMutation({
     mutationKey: ["addBookMarks"],
     mutationFn: async (data) => {
       const response = await axiosInstance.post(`/auth/wishlist/store`, data);
@@ -22,7 +22,7 @@ const useBookMarks = () => {
 
   // Note: export all things
   return {
-    handleBookMarks,
+    handleBookMarksMutation,
   };
 };
 export default useBookMarks;

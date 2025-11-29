@@ -3,25 +3,28 @@ import { FaCrown, FaRegBookmark, FaBookmark } from "react-icons/fa6";
 import StarRating from "./common/StarRating";
 import CommonBtn from "./common/CommonBtn";
 import Image from "next/image";
-import { useState } from "react";
+import useBookMarks from "@/hooks/bookmarks.hook";
 const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
+    const { handleBookMarksMutation } = useBookMarks();
+
     const {
+        id,
         title,
         author,
         cover_image,
         rating,
-        is_bookmark,
         description,
         category = {},
+        is_bookmarked,
         subcategories = [],
     } = book || {}
-    const [isBookmarked, setIsBookmarked] = useState(is_bookmark);
+    console.log(book)
 
     // Note: convert cover image to null if this empty image
     const src = cover_image ? cover_image : null
 
     const handleBookmark = () => {
-        setIsBookmarked(!isBookmarked);
+        handleBookMarksMutation.mutate({ book_id: id });
     };
     // Note: main render
     return (
@@ -53,10 +56,10 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                                     type="button"
                                     onClick={handleBookmark}
                                 >
-                                    {isBookmarked ? (
-                                        <FaBookmark className="text-dark" />
+                                    {is_bookmarked ? (
+                                        <FaBookmark className="text-yellow-500" />
                                     ) : (
-                                        <FaRegBookmark />
+                                        <FaRegBookmark className="" />
                                     )}
                                 </button>
                             </div>
@@ -71,7 +74,7 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                             </div>
                             <p className="sm:text-base text-sm sm:h-full line-clamp-3 md:line-clamp-8">{description}</p>
                             <div className="w-full flex  flex-wrap gap-2">
-                                {subcategories.map((category, index) => (
+                                {subcategories.map((category) => (
                                     <span className="border flex sm:text-base text-xs capitalize font-medium justify-center items-center px-2 sm:px-5 py-1 sm:py-2 rounded-full" key={category.id}>
                                         {category.name}
                                     </span>
@@ -108,11 +111,12 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                                     type="button"
                                     onClick={handleBookmark}
                                 >
-                                    {isBookmarked ? (
-                                        <FaBookmark className="text-dark" />
+                                    {is_bookmarked ? (
+                                        <FaBookmark className="text-yellow-500 bg-amber-400" />
                                     ) : (
-                                        <FaRegBookmark />
+                                        <FaRegBookmark className="text-dark" />
                                     )}
+
                                 </button>
                             </div>
                         </div>
@@ -141,6 +145,5 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
             }
         </>
     )
-}
-
-export default RecommendedBookCard
+};
+export default RecommendedBookCard;
