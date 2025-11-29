@@ -17,7 +17,7 @@ const RelatedBooks = ({ book }) => {
         try {
             const parsed = JSON.parse(book.category_ids);
             if (Array.isArray(parsed)) {
-                return parsed.join(",");
+                 return parsed.join(",");
             }
         } catch (error) {
             console.error("Failed to parse category_ids:", error);
@@ -25,8 +25,8 @@ const RelatedBooks = ({ book }) => {
 
         return "";
     }, [book?.category_ids]);
-    console.log("Category String for API:", categoryString);
 
+    // Note: get related books
     const { data: relatedBooks = [], isLoading, isError } = useQuery({
         queryKey: ["relatedBooks", categoryString],
         queryFn: async () => {
