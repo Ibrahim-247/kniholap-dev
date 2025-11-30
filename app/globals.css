@@ -56,11 +56,11 @@ body {
 }
 
 .perspective {
-  perspective: 3000px; /* Adjust for more/less depth */
+  perspective: 3000px;
 }
 
 .book-3d {
-  transform: rotateY(-15deg); /* Tilt for 3D look */
+  transform: rotateY(-15deg);
   transform-style: preserve-3d;
 }
 
@@ -94,7 +94,6 @@ body {
   border-radius: 50%;
 }
 
-/* ant design pagination */
 /* for pagination starts  */
 .ant-pagination .ant-pagination-item {
   background-color: transparent !important;
@@ -120,101 +119,48 @@ body {
   height: 100% !important;
   font-size: 16px !important;
 }
-.ant-pagination .ant-select-selector,
-.ant-pagination .ant-select-selection-item {
-}
 .ant-pagination .ant-select .ant-select-selection-wrap {
   gap: 10px !important;
   align-items: center !important;
 }
-
-.ant-pagination .ant-pagination-item a {
-}
-
 .ant-pagination .ant-pagination-item-active {
   border: 1px solid var(--color-primary) !important;
 }
-
-.ant-pagination .anticon,
-.ant-pagination .ant-pagination-item-ellipsis {
-}
-
 .ant-pagination .ant-pagination-item-active a {
   color: black !important;
 }
-
-/* for pagination ends  */
-
-/* custom swiper thumbnail */
-@layer utilities {
-  .thumbSwiper .swiper-slide-thumb-active img {
-    @apply ring-2 ring-primary  opacity-100;
-  }
-
-  .thumbSwiper .swiper-slide img {
-    @apply opacity-70 transition-all duration-200;
-  }
-}
 /* custom otp input */
-
 .ant-otp .ant-otp-input {
   width: 100% !important;
   height: 100% !important;
   padding: 20px !important;
 }
-
 .ant-otp .ant-otp-input:hover {
   border-color: var(--color-primary) !important;
 }
 .ant-otp .ant-otp-input:focus {
   border-color: var(--color-primary) !important;
 }
-
 /* Note: custom switch background color  */
 .custom-switch.ant-switch-checked {
   background-color: #f84e12 !important;
 }
-
 /* Note: Make the popup rounded and clean */
 .custom-calendar-popup .ant-picker-panel-container {
   border-radius: 16px !important;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
-
 /* Note: optional: center text */
 .custom-calendar-popup .ant-picker-header-view button {
   font-weight: 600;
   font-size: 16px;
 }
-
-/* Remove default AntD border and background */
+/* Note: Remove default AntD border and background */
 .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
 }
-
-/* Remove default focus shadow */
-/* .ant-select-focused .ant-select-selector {
-  border: none !important;
-  box-shadow: none !important;
-} */
-
-/* Reduce inner padding to align text nicely */
-/* .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-  padding: 0 !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-} */
-
-/* Style dropdown text */
-/* .ant-select-selection-item,
-.ant-select-selection-placeholder {
-  font-size: 16px !important;
-  text-transform: capitalize !important;
-} */
-
 /* hover color */
 .ant-select-item-option-active {
   color: black !important;

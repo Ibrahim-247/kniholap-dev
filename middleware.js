@@ -18,7 +18,12 @@ export function middleware(request) {
   ];
 
   // Protected routes (require login)
-  const protectedRoutes = ["/choose_interests", "/dashboard", "/bookmark"];
+  const protectedRoutes = [
+    "/choose_interests",
+    "/dashboard",
+    "/bookmark",
+    "/subscription/plan",
+  ];
 
   const isPublicPath = publicRoutes.some((route) => pathname.startsWith(route));
   const isProtectedPath = protectedRoutes.some((route) =>
@@ -45,5 +50,11 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/auth/:path*", "/choose_interests/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/auth/:path*",
+    "/choose_interests/:path*",
+    "/bookmark/:path*",
+    "/subscription/plan/:path*",
+  ],
 };
