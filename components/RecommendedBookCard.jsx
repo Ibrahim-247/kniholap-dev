@@ -4,9 +4,10 @@ import StarRating from "./common/StarRating";
 import CommonBtn from "./common/CommonBtn";
 import Image from "next/image";
 import useBookMarks from "@/hooks/bookmarks.hook";
+import { useState } from "react";
 const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
     const { handleBookMarksMutation } = useBookMarks();
-
+    // Note: destructuring all data
     const {
         id,
         title,
@@ -17,14 +18,15 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
         category = {},
         is_bookmarked,
         subcategories = [],
-    } = book || {}
-    console.log(book)
+    } = book || {};
+    const [isBookMarked, setIsBookMarked] = useState(is_bookmarked)
 
     // Note: convert cover image to null if this empty image
     const src = cover_image ? cover_image : null
 
     const handleBookmark = () => {
         handleBookMarksMutation.mutate({ book_id: id });
+        setIsBookMarked((prev) => !prev);
     };
     // Note: main render
     return (
@@ -56,7 +58,7 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                                     type="button"
                                     onClick={handleBookmark}
                                 >
-                                    {is_bookmarked ? (
+                                    {isBookMarked ? (
                                         <FaBookmark className="text-yellow-500" />
                                     ) : (
                                         <FaRegBookmark className="" />
@@ -111,10 +113,10 @@ const RecommendedBookCard = ({ book = {}, isFirstBook = false }) => {
                                     type="button"
                                     onClick={handleBookmark}
                                 >
-                                    {is_bookmarked ? (
-                                        <FaBookmark className="text-yellow-500 bg-amber-400" />
+                                    {isBookMarked ? (
+                                        <FaBookmark className="text-yellow-500" />
                                     ) : (
-                                        <FaRegBookmark className="text-dark" />
+                                        <FaRegBookmark className="" />
                                     )}
 
                                 </button>
