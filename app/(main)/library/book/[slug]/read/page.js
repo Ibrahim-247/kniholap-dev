@@ -74,8 +74,8 @@ export default async function BookDetailsPage({ params }) {
                   value={book?.total_rating_avg || "N/A"}
                   readOnly
                 />
-                <span>{book?.rating_avg || 0}</span>
-                <span>({book?.no_of_reviews || 0} reviews)</span> 
+                <span>{book?.total_rating_avg || 0}</span>
+                <span>({book?.no_of_reviews || 0} reviews)</span>
               </div>
             </div>
 
